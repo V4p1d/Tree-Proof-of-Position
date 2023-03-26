@@ -1,0 +1,6 @@
+,Simulation number,Probability of honest cars,Probability of coerced cars,Density,Threshold,Accuracy,True Positives,True Negatives,False Positives,False Negatives,Percent True Positives,Percent True Negatives,Percent False Positives,Percent False Negatives
+0,0,0.0,0.0,125.0,1,100.0,0,50000,0,0,0,100.0,0.0,100
+1,1,0.0,0.0,125.0,1,100.0,0,50000,0,0,0,100.0,0.0,100
+2,2,0.0,0.0,125.0,1,100.0,0,50000,0,0,0,100.0,0.0,100
+3,3,0.0,0.0,125.0,1,100.0,0,50000,0,0,0,100.0,0.0,100
+4,4,0.0,0.0,125.0,1,100.0,0,50000,0,0,0,100.0,0.0,100

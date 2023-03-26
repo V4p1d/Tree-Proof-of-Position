@@ -9,7 +9,7 @@ def lying_car_init(position, fake_position, coerced):
     and the ID is unique."""
 
     velocity = ((np.random.rand(2)*2)-1)
-    range_of_sight = 0.1 #round(random.uniform(0.1,0.2), 100)
+    range_of_sight = 0.5 #round(random.uniform(0.1,0.2), 100)
     ID = str(secrets.token_hex(5))
     car = lying_car(position, velocity, range_of_sight, ID, coerced, fake_position)
 
@@ -19,7 +19,7 @@ def honest_car_init(position, coerced):
     """creating a lying car with a given true and fake position. Velocity is given randomly, range of sight is given
     and the ID is unique."""
     velocity = ((np.random.rand(2)*2)-1)
-    range_of_sight = 0.1 #np.random.uniform(0, 0.25, size=(1)).astype(int)
+    range_of_sight = 0.5 #np.random.uniform(0, 0.25, size=(1)).astype(int)
     ID = str(secrets.token_hex(5))
     car = Car(position, velocity, range_of_sight, ID, coerced)
 

@@ -24,17 +24,17 @@ class Environment:
             self.grid[x_index][y_index].add(car)
         #assign lying cars too
 
-def environment_update(car_list, dt, environment):
-    for car in car_list:
-        #put all the cars into the Environment for the first time
-        environment.assign(car)
-        
-    for car in car_list:
-        if car.honest is True:
-            car.move(dt, environment)
-        else:
-            car.move_fake_position(dt, environment)
-        car.neighbours = set()
-        
-    for car in car_list:
-        car.add_neighbours(environment) 
+    def environment_update(self, car_list, dt):
+        for car in car_list:
+            #put all the cars into the Environment for the first time
+            self.assign(car)
+            
+        for car in car_list:
+            if car.honest is True:
+                car.move(dt, self)
+            else:
+                car.move_fake_position(dt, self)
+            car.neighbours = set()
+            
+        for car in car_list:
+            car.add_neighbours(self) 

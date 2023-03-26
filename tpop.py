@@ -5,6 +5,7 @@ import initialiser_functions as i
 import environment_class as e
 
 
+
 def checks_v2(child, named_cars, number_of_witnesses_needed, threshold):
     """checks called from the child with respect to the parent node, to ensure that 
     all criteria for T-PoP are met."""
@@ -35,11 +36,10 @@ def checks_v2(child, named_cars, number_of_witnesses_needed, threshold):
 def checks_v3(child, named_cars, number_of_witnesses_needed, threshold):
     """checks called from the child with respect to the parent node, to ensure that 
     all criteria for T-PoP are met."""
-    counter = 0
+    
     parent = child.parent
     parent_position = parent.claim_position()
-
-    
+    #print(child.is_car_a_neighbour(parent), child.is_in_range_of_sight(parent_position), child.ID not in named_cars, len(parent.children) >= int(number_of_witnesses_needed * threshold), len(parent.children) == len(set(parent.children)))
     if (
     #checking the parent is a neighbour of the child
     child.is_car_a_neighbour(parent) is True and
@@ -84,6 +84,7 @@ class Tree2:
             s = []
             #for all nodes in the given depth level
             for node in self.nodes[d]:
+                l = []
                 #the node names some witnesses
                 witnesses = node.name_witness(n[d])
                 if witnesses is not None:
@@ -92,8 +93,9 @@ class Tree2:
                         #we set the parent of that witness to be the node naming them
                         witness.parent = node
                         s.append(witness)
+                        l.append(witness)
                 #and set the children of the nodes to be the named witnesses    
-                node.children = s
+                node.children = l
             self.nodes.append(s)
 
 
@@ -150,27 +152,32 @@ def reverse_bfs(tree, witness_number_per_depth, threshold):
 
 def TPoP(tree, threshold:float, witness_number_per_depth:int) -> bool:
     named_cars = set()
+
+    verifiedCars = [[True for car in l] for l in tree.nodes]
+    
     for level in range(tree.depth - 1, -1, -1):
         number_of_witnesses_needed = witness_number_per_depth[level]
         counterDepth = 0
-        for parent in tree.nodes[level]:
+        indexChild = 0
+        for indexParent, parent in enumerate(tree.nodes[level]):
                 counterChildren = 0
+              
                 for child in parent.children:
                     
-                    if child.verified and checks_v3(child, named_cars, number_of_witnesses_needed, threshold):
-
+                    if checks_v3(child, named_cars, number_of_witnesses_needed, threshold) and verifiedCars[level + 1][indexChild]:
                         counterChildren += 1
                         counterDepth += 1
+                    indexChild += 1
 
-                if counterChildren < threshold*len(parent.children):
-                    parent.verified = False
+                if counterChildren < threshold*witness_number_per_depth[level+1]:
+                    verifiedCars[level][indexParent] = False
                 
-        if counterDepth < threshold*len(tree.nodes[level+1]):
-            parent.algorithm_honesty_output = False
-        else:
-            parent.algorithm_honesty_output = True
-        
-    return parent.algorithm_honesty_output
+        if counterDepth < threshold*witness_number_per_depth[level+1]:
+            
+            return False
+    
+
+    return True
 
 
 
@@ -179,22 +186,28 @@ def results(cars):
     True_Negative = 0
     False_Positive = 0
     False_Negative = 0
+    total_honest = 0
+    total_dishonest = 0
 
 
     for car in cars:
 
         if car.honest is True and car.algorithm_honesty_output is True:
             True_Positive += 1
+            total_honest += 1
         if car.honest is True and car.algorithm_honesty_output is False:
             False_Negative += 1
+            total_honest += 1
         if car.honest is False and car.algorithm_honesty_output is True:
             False_Positive += 1
+            total_dishonest += 1
         if car.honest is False and car.algorithm_honesty_output is False:
             True_Negative += 1
+            total_dishonest += 1
 
     Accuracy = ((True_Positive + True_Negative) / (True_Positive + True_Negative + False_Positive + False_Negative)) * 100
     
-    return True_Positive, True_Negative, False_Positive, False_Negative, Accuracy
+    return True_Positive, True_Negative, False_Positive, False_Negative, Accuracy, total_honest, total_dishonest
 
 #True_Positive, True_Negative, False_Positive, False_Negative, Accuracy = results(car_list)
 #print(True_Positive, True_Negative, False_Positive, False_Negative)
