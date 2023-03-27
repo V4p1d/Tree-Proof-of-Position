@@ -233,29 +233,25 @@ class lying_car(Car):
                     #if a lying car finds another lying car claiming to be in the same FAKE position, it will add it as its neighbour. 
                     #it will NOT add the other lying car's real position, only its FAKE position
 
-                        if alleged_nearby_car.honest == False and alleged_nearby_car.coerced == True:
+                        if alleged_nearby_car.honest == False:
                             
                             x, y = alleged_nearby_car.get_fake_position_indicies(city.grid_size)
                             if x == grid_square[0] and y == grid_square[1]:
-                                
-                                
                                 if self.is_in_range_of_sight(alleged_nearby_car.fake_position) and alleged_nearby_car.ID != self.ID:
                                     self.neighbours.add(alleged_nearby_car)
 
-                        elif alleged_nearby_car.honest == True and alleged_nearby_car.coerced == True:
+                        elif alleged_nearby_car.honest == True:
                             x, y = alleged_nearby_car.get_position_indicies(city.grid_size)
                             if x == grid_square[0] and y == grid_square[1]:
-                                
                                 if self.is_in_range_of_sight(alleged_nearby_car.position) and alleged_nearby_car.ID != self.ID:
                                     self.neighbours.add(alleged_nearby_car)
 
                     elif self.coerced == False:
                         #A lying, not coerced car will see the true position of any car, with respect to its own fake position.
-                        if alleged_nearby_car.honest == True and alleged_nearby_car.coerced == True:
-                            x, y = alleged_nearby_car.get_position_indicies(city.grid_size)
-                            if x == grid_square[0] and y == grid_square[1]:
-                                if self.is_in_range_of_sight(alleged_nearby_car.position) and alleged_nearby_car.ID != self.ID:
-                                    self.neighbours.add(alleged_nearby_car)
+                        x, y = alleged_nearby_car.get_position_indicies(city.grid_size)
+                        if x == grid_square[0] and y == grid_square[1]:
+                            if self.is_in_range_of_sight(alleged_nearby_car.position) and alleged_nearby_car.ID != self.ID:
+                                self.neighbours.add(alleged_nearby_car)
                     
                         
 

@@ -192,22 +192,22 @@ def results(cars):
 
     for car in cars:
 
-        if car.honest is True and car.algorithm_honesty_output is True:
+        if car.honest and car.algorithm_honesty_output:
             True_Positive += 1
             total_honest += 1
-        if car.honest is True and car.algorithm_honesty_output is False:
+        if car.honest  and not car.algorithm_honesty_output:
             False_Negative += 1
             total_honest += 1
-        if car.honest is False and car.algorithm_honesty_output is True:
+        if not car.honest and car.algorithm_honesty_output:
             False_Positive += 1
             total_dishonest += 1
-        if car.honest is False and car.algorithm_honesty_output is False:
+        if not car.honest  and not car.algorithm_honesty_output:
             True_Negative += 1
             total_dishonest += 1
 
-    Accuracy = ((True_Positive + True_Negative) / (True_Positive + True_Negative + False_Positive + False_Negative)) * 100
     
-    return True_Positive, True_Negative, False_Positive, False_Negative, Accuracy, total_honest, total_dishonest
+    
+    return True_Positive, True_Negative, False_Positive, False_Negative, total_honest, total_dishonest
 
 #True_Positive, True_Negative, False_Positive, False_Negative, Accuracy = results(car_list)
 #print(True_Positive, True_Negative, False_Positive, False_Negative)

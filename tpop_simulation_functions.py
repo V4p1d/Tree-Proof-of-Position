@@ -6,7 +6,8 @@ import pandas as pd
 import initialiser_functions as i
 import numpy as np
 
-def parser(simulation_number, probability_of_honest, probability_of_coerced, density, threshold, accuracy, True_Positive, True_Negative, False_Positive, False_Negative, total_honest, total_dishonest):
+def parser(simulation_number, probability_of_honest, probability_of_coerced, density, threshold, True_Positive, True_Negative, False_Positive, False_Negative, total_honest, total_dishonest):
+    
     if total_honest:
         percent_true_positives = (True_Positive / total_honest) * 100
         percent_false_negatives = False_Negative / total_honest * 100
@@ -21,7 +22,7 @@ def parser(simulation_number, probability_of_honest, probability_of_coerced, den
         percent_true_negatives = 100
         percent_false_positives = 0
 
-    row_list = [simulation_number, probability_of_honest, probability_of_coerced, density, threshold, accuracy,
+    row_list = [simulation_number, probability_of_honest, probability_of_coerced, density, threshold,
     True_Positive, True_Negative, False_Positive, False_Negative, percent_true_positives, percent_true_negatives, 
     percent_false_positives, percent_false_negatives]
 
@@ -51,8 +52,8 @@ def tpop_simulator(number_of_simulations:int, number_of_cars:int, probability_of
             tree = t.Tree2(car, depth, witness_number_per_depth)
             car.algorithm_honesty_output = t.TPoP(tree, threshold, witness_number_per_depth)
         
-        True_Positive, True_Negative, False_Positive, False_Negative, Accuracy, total_honest, total_dishonest = t.results(car_list)
-        row = parser(simulation, probability_of_honest, probability_of_coerced, density, threshold, Accuracy, True_Positive, True_Negative, False_Positive, False_Negative, total_honest, total_dishonest)
+        True_Positive, True_Negative, False_Positive, False_Negative, total_honest, total_dishonest = t.results(car_list)
+        row = parser(simulation, probability_of_honest, probability_of_coerced, density, threshold, True_Positive, True_Negative, False_Positive, False_Negative, total_honest, total_dishonest)
         
         data.append(row)
         
